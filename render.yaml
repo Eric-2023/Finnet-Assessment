@@ -1,0 +1,33 @@
+# Render Blueprint — defines the backend as a web service.
+# Deploy via: Render dashboard → New → Blueprint → point at this repo.
+# Render auto-detects this file at the repo root or service root and
+# provisions accordingly; no manual build/start command entry needed.
+#
+# Note on SQLite + Render free tier: the filesystem on Render's free web
+# services is ephemeral — finnet.db is wiped on every redeploy or restart.
+# This is acceptable here because seeding is automatic on startup (see
+# app/seed.py), so the service always comes back up with fresh, consistent
+# data rather than an empty or corrupt database. If persistent data across
+# restarts is needed later, attach a Render Disk and point
+# SQLALCHEMY_DATABASE_URL at a path under the mounted volume, or migrate
+# to Render's managed Postgres.
+
+services:
+  - type: web
+    name: finnet-assessment-api
+    runtime: python
+    rootDir: server
+    plan: free
+    region: oregon
+    branch: main
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.9
+      - key: ALLOWED_ORIGINS
+        # Comma-separated list of origins allowed to call this API.
+        # Set this to the deployed Vercel URL after the frontend is live,
+        # e.g. https://finnet-assessment.vercel.app
+        sync: false
