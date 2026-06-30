@@ -1,0 +1,74 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap');
+
+@theme {
+  /* Color: deep ink navy as the anchor, warm paper background (not cream-serif
+     cliché — paired with a geometric sans, not a high-contrast serif), signal
+     teal as the single accent that carries meaning (selection, success,
+     primary actions), amber reserved for empty/attention states only. */
+  --color-ink: #14213D;
+  --color-ink-soft: #2A3B5C;
+  --color-paper: #F7F5F0;
+  --color-card: #FFFFFF;
+  --color-signal: #0F766E;
+  --color-signal-soft: #CCFBF1;
+  --color-amber: #D97706;
+  --color-amber-soft: #FEF3C7;
+  --color-slate: #64748B;
+  --color-line: #E5E1D8;
+  --color-danger: #B91C1C;
+  --color-danger-soft: #FEE2E2;
+
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
+  :focus-visible {
+    outline: 2px solid var(--color-signal);
+    outline-offset: 2px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer utilities {
+  .skeleton {
+    background: linear-gradient(90deg, #ECE9E1 25%, #E0DCD1 37%, #ECE9E1 63%);
+    background-size: 400% 100%;
+    animation: shimmer 1.4s ease infinite;
+  }
+  @keyframes shimmer {
+    0% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  @keyframes slideInTop {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .animate-slide-in {
+    animation: slideInTop 0.32s ease-out;
+  }
+  @keyframes fadeHighlight {
+    0% { background-color: var(--color-signal-soft); }
+    100% { background-color: transparent; }
+  }
+  .animate-fade-highlight {
+    animation: fadeHighlight 1.8s ease-out;
+  }
+}
