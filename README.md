@@ -80,6 +80,40 @@ the server and delete `server/finnet.db`, then restart.
 
 ---
 
+## Deployment
+
+### Backend → Render
+
+1. Push this repo to GitHub.
+2. In Render: **New → Blueprint**, point at the repo. `render.yaml` at the
+   repo root configures the service automatically (root dir `server`,
+   build/start commands, health check at `/health`).
+3. After the frontend is deployed (next section), set the `ALLOWED_ORIGINS`
+   env var on the Render service to the Vercel URL, e.g.
+   `https://finnet-assessment.vercel.app` — comma-separate multiple origins
+   if needed. Without this set, CORS defaults to `*` (fine for local dev,
+   not recommended to leave open in production).
+4. Note: the free tier's filesystem is ephemeral, so `finnet.db` resets on
+   every redeploy/restart. This is fine here since the app auto-seeds on
+   startup — it just means seed data resets too. See the trade-offs
+   section below for the Postgres migration path if persistence is ever
+   needed.
+
+### Frontend → Vercel
+
+1. In Vercel: **New Project**, import the repo, set **Root Directory** to
+   `client`. `vercel.json` configures the build (Vite framework preset,
+   `npm run build`, output `dist`).
+2. Add an Environment Variable: `VITE_API_URL` = the Render backend URL
+   from above (e.g. `https://finnet-assessment-api.onrender.com`). See
+   `client/.env.example`. This must be a real Vercel project env var, not
+   a committed `.env` file, since it's only known after the backend is
+   live.
+3. Deploy. Update the **Live demo** link at the top of this README with
+   both URLs once confirmed working.
+
+---
+
 ## Design decisions & trade-offs
 
 **Database: SQLite over Postgres.**
