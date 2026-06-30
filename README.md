@@ -89,6 +89,19 @@ Postgres later is a one-line connection-string change, not a rewrite. The
 trade-off is SQLite's weaker concurrent-write story, which doesn't matter at
 this scope but would matter in production.
 
+**Seed data: Kenya-localized, not generic Faker defaults.**
+Names, emails, and company names use Faker's `en_KE` provider so they read
+as real Kenyan identities rather than the default US-style fixtures. Faker's
+`en_KE` address provider still falls back to generic English town-name
+templates, though, so cities and street addresses are hand-curated from
+real Kenyan locations (Nairobi, Mombasa, Kisumu, etc. and real street names
+like Moi Avenue, Kimathi Street) instead of using it as-is. Post bodies are
+hand-written rather than Faker's `paragraph()` — that method produces
+grammatically valid but meaningless word salad, which doesn't read
+convincingly as a real social/business post feed; a small bank of genuine,
+locally-grounded post topics (M-Pesa, traffic on Thika Road, NSSF payroll
+changes, etc.) is sampled per user instead.
+
 **Company/address as flat columns, not separate tables.**
 The spec needs these only as read-only fields attached to a user — there's
 no independent querying or reuse of "company" or "address" as their own
