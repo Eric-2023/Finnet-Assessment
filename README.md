@@ -37,7 +37,7 @@ FinnetTrust technical assessment.
 
 ## Prerequisites
 
-- Python 3.11+
+- Python 3.9+
 - Node.js 18+ and npm
 
 ---
