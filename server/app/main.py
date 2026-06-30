@@ -1,3 +1,5 @@
+import os
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
@@ -13,13 +15,19 @@ app = FastAPI(
     version="1.0.0",
 )
 
-# Design decision: wide-open CORS is fine for an assessment app talking
-# to a known frontend; a production deployment would restrict
-# allow_origins to the actual frontend domain(s).
+# Design decision: CORS origins come from an env var so the same image
+# can run wide-open in local dev (no ALLOWED_ORIGINS set → "*") and
+# locked down to the real Vercel domain in production, without a code
+# change. allow_credentials is False because this API doesn't use
+# cookies/session auth — browsers reject the "*" + credentials=True
+# combination outright, so leaving it off keeps the wildcard valid.
+_origins_env = os.getenv("ALLOWED_ORIGINS", "*")
+ALLOWED_ORIGINS = ["*"] if _origins_env == "*" else [o.strip() for o in _origins_env.split(",")]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
 )
