@@ -3,8 +3,8 @@
 A full-stack app for browsing users and managing their posts, built for the
 FinnetTrust technical assessment.
 
-**Live demo:** _(add Vercel/Render URLs here after deploying)_
-**Repo:** _(add Git repo link here)_
+**Live demo:** https://finnet-assessment.vercel.app
+**Repo:** https://github.com/Eric-2023/Finnet-Assessment
 
 ---
 
