@@ -8,6 +8,19 @@ FinnetTrust technical assessment.
 
 ---
 
+## Screenshots
+
+**Dashboard — user selected, posts feed**
+![Dashboard](screenshots/dashboard.png)
+
+**Validation — empty field errors surfaced inline**
+![Validation errors](screenshots/validation.png)
+
+**Error state — backend unreachable, retry button**
+![Error state](screenshots/error-state.png)
+
+---
+
 ## Project structure
 
 ```
